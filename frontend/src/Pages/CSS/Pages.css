@@ -1,0 +1,59 @@
+.home{
+    height: 60vh;
+    display: flex;
+    align-items: center;
+}
+.swap-container {
+    background-color: #1a1a1a;
+    color: white;
+    padding: 30px;
+    border-radius: 10px;
+    height: 400px;
+    max-width: 600px; /* İhtiyacınıza göre ayarlayabilirsiniz */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    margin: 2rem auto;
+  }
+  
+  .swap-box {
+    display: flex;
+    flex-direction: column;
+  }
+  .swap-header {
+    text-align: center;
+    margin-bottom: 2rem; /* Başlık için alt boşluk eklendi */
+  }
+  
+  .input-group {
+    display: flex;
+    justify-content: column;
+    margin-bottom: 1.5rem;
+  }
+  
+  .input-group select,
+  .input-group input {
+    margin: 15px;
+    padding: 15px;
+    border: 2px solid #333;
+    border-radius: 5px;
+    background-color: #262626;
+    color: white;
+    font-size: 1rem;
+  }
+  
+  .swap-button {
+    padding: 15px 30px;
+    font-size: 1rem;
+    background-color: #0062cc;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .estimated-gas {
+    font-size: 0.9rem; /* Font büyüklüğü ayarlandı */
+    text-align: center; /* Metin ortalandı */
+    margin-bottom: 2rem;
+  }
+  
