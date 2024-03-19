@@ -1,22 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./CSS/Pages.css";
 
 const Home = () => {
-  const [token1, setToken1] = useState("");
   const [amount1, setAmount1] = useState("");
-  const [token2, setToken2] = useState("");
   const [amount2, setAmount2] = useState("");
   const [estimatedGas, setEstimatedGas] = useState("");
+
+  const [coins, setCoins] = useState([]);
+
+  useEffect(() => {
+    const fetchCoins = async () => {
+      const response = await fetch(
+        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false"
+      );
+      const data = await response.json();
+      setCoins(data);
+      console.log(data)
+    };
+
+    fetchCoins();
+  }, []);
 
   return (
     <div className="home">
       <div className="swap-container">
-      <h2 className="swap-header">Token Swap</h2> {/* Başlık eklendi */}
+        <h2 className="swap-header">Token Swap</h2> {/* Başlık eklendi */}
         <div className="swap-box">
           <div className="input-group">
-            <select value={token1} onChange={(e) => setToken1(e.target.value)}>
-              {/* Token listesi opsiyonları buraya ekleyin */}
-              <option value="">Select a Token</option>
+            <select>
+              {coins.map((coin) => (
+                <option key={coin.id} value={coin.id}>
+                  {coin.name} ({coin.symbol.toUpperCase()})
+                </option>
+              ))}
             </select>
             <input
               type="text"
@@ -26,9 +42,13 @@ const Home = () => {
             />
           </div>
           <div className="input-group">
-            <select value={token2} onChange={(e) => setToken2(e.target.value)}>
-              {/* Token listesi opsiyonları buraya ekleyin */}
-              <option value="">Select a Token</option>
+          <select>
+              {coins.map((coin) => (
+                <option key={coin.id} value={coin.id}>
+                  <img src={coin.image} alt="" />
+                 {coin.name} ({coin.symbol.toUpperCase()})
+                </option>
+              ))}
             </select>
             <input
               type="text"
