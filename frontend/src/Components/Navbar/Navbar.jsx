@@ -2,6 +2,7 @@ import React from 'react'
 import './Navbar.css'
 import logo from '../Assest/logoblue.png'
 import { Link } from 'react-router-dom'
+import WSCoin from '../WSCoin/WSCoin'
 
 const Navbar = () => {
   return (
@@ -12,7 +13,7 @@ const Navbar = () => {
             <div className="headerItem">Tokens</div>
         </div>
         <div className="righth">
-            <div className="headerItem">Ethereum</div>
+            <div><WSCoin /></div>
             <div className="headerItem"><button>Connect</button></div>
         </div>
     </div>
