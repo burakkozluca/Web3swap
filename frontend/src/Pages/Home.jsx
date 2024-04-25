@@ -2,23 +2,36 @@ import React, { useEffect, useState } from "react";
 import "./CSS/Pages.css";
 
 const Home = () => {
+  const [token1, setToken1] = useState("");
   const [amount1, setAmount1] = useState("");
+  const [token2, setToken2] = useState("");
   const [amount2, setAmount2] = useState("");
   const [estimatedGas, setEstimatedGas] = useState("");
 
   const [coins, setCoins] = useState([]);
+  const [ticker, setTicker] = useState([])
 
   useEffect(() => {
-    const fetchCoins = async () => {
-      const response = await fetch(
-        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false"
-      );
-      const data = await response.json();
-      setCoins(data);
-      console.log(data)
-    };
 
-    fetchCoins();
+
+    function fetchCoinData() {
+      fetch("http://localhost:4000/coins")
+        .then((response) => response.json())
+        .then((data) => {
+          setTicker(data);
+          const symbols = Object.keys(data);
+          setCoins(symbols);
+          console.log(data); 
+        })
+        .catch((error) => console.error("Error fetching data:", error));
+    }
+    fetchCoinData()
+    // fetch("http://localhost:4000/coins")
+    //   .then((response) => response.json())
+    //   .then((data) => setTicker(data));
+    //   const symbols = Object.keys(ticker);
+    //   setCoins(symbols)
+    // console.log(ticker);
   }, []);
 
   return (
@@ -30,7 +43,7 @@ const Home = () => {
             <select>
               {coins.map((coin) => (
                 <option key={coin.id} value={coin.id}>
-                  {coin.name} ({coin.symbol.toUpperCase()})
+                  {coin} ({coin.symbol})
                 </option>
               ))}
             </select>
@@ -42,11 +55,11 @@ const Home = () => {
             />
           </div>
           <div className="input-group">
-          <select>
+            <select>
               {coins.map((coin) => (
                 <option key={coin.id} value={coin.id}>
                   <img src={coin.image} alt="" />
-                 {coin.name} ({coin.symbol.toUpperCase()})
+                  {coin} ({coin.symbol})
                 </option>
               ))}
             </select>
