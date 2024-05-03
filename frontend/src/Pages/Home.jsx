@@ -19,9 +19,12 @@ const Home = () => {
         .then((response) => response.json())
         .then((data) => {
           setTicker(data);
-          const symbols = Object.keys(data);
-          setCoins(symbols);
-          console.log(data); 
+          const filteredCoins = ['BTCUSDT', 'ETHUSDT'].map(key => ({
+            id: key,
+            price: data[key]
+          }));
+          setCoins(filteredCoins); // Filtrelenmiş coin listesini state'e kaydet
+          console.log(filteredCoins); // Konsola yazdır
         })
         .catch((error) => console.error("Error fetching data:", error));
     }
@@ -43,7 +46,7 @@ const Home = () => {
             <select>
               {coins.map((coin) => (
                 <option key={coin.id} value={coin.id}>
-                  {coin} ({coin.symbol}) {coin.price}
+                  {coin.id} - ${coin.price}
                 </option>
               ))}
             </select>
@@ -58,8 +61,7 @@ const Home = () => {
             <select>
               {coins.map((coin) => (
                 <option key={coin.id} value={coin.id}>
-                  <img src={coin.image} alt="" />
-                  {coin} ({coin.symbol}) {coin.price}
+                  {coin.id} - ${coin.price}
                 </option>
               ))}
             </select>
@@ -71,7 +73,7 @@ const Home = () => {
             />
           </div>
           <div className="estimated-gas">
-            <label>Estimated Gas1sf: {estimatedGas}</label>
+            <label>Estimated Gas12: {estimatedGas}</label>
           </div>
           <button
             className="swap-button"
