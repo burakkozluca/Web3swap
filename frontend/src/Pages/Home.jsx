@@ -43,7 +43,7 @@ const Home = () => {
             <select>
               {coins.map((coin) => (
                 <option key={coin.id} value={coin.id}>
-                  {coin} ({coin.symbol})
+                  {coin} ({coin.symbol}) {coin.price}
                 </option>
               ))}
             </select>
@@ -59,7 +59,7 @@ const Home = () => {
               {coins.map((coin) => (
                 <option key={coin.id} value={coin.id}>
                   <img src={coin.image} alt="" />
-                  {coin} ({coin.symbol})
+                  {coin} ({coin.symbol}) {coin.price}
                 </option>
               ))}
             </select>
@@ -71,7 +71,7 @@ const Home = () => {
             />
           </div>
           <div className="estimated-gas">
-            <label>Estimated Gas: {estimatedGas}</label>
+            <label>Estimated Gas1sf: {estimatedGas}</label>
           </div>
           <button
             className="swap-button"

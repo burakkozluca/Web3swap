@@ -28,7 +28,8 @@ app.get('/coins', async(req,res) =>{
     } else {
       const symbols = Object.keys(ticker);
       res.send(ticker)
-      console.log('Tüm semboller:', symbols);
+      //console.log('Tüm semboller:', symbols);
+      console.log(ticker)
     }
   });
 })
