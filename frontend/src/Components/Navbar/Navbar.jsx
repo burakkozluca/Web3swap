@@ -3,6 +3,7 @@ import './Navbar.css'
 import logo from '../Assest/logoblue.png'
 import { Link } from 'react-router-dom'
 import WSCoin from '../WSCoin/WSCoin'
+import ConnectWallet from '../ConnectWallet/ConnectWallet' // ConnectWallet componentini import edin
 
 const Navbar = () => {
   return (
@@ -14,7 +15,7 @@ const Navbar = () => {
         </div>
         <div className="righth">
             <div><WSCoin /></div>
-            <div className="headerItem"><button>Connect</button></div>
+            <div className="headerItem"><ConnectWallet /></div>
         </div>
     </div>
   )
