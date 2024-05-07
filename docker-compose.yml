@@ -13,9 +13,7 @@ services:
   frontend:
     build: ./frontend
     ports:
-      - "80:80"
-    environment:
-      - CHOKIDAR_USEPOLLING=true
+      - "423:80"  # Nginx varsayılan olarak 80 portunu kullanır, bu yüzden hostun 423 portunu container'ın 80 portuna yönlendir
     volumes:
       - ./frontend/src:/app/src
       - ./node_modules:/src/app/node_modules

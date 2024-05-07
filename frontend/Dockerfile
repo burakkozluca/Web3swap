@@ -17,5 +17,5 @@ FROM nginx:alpine
 COPY --from=build /src/app/build /usr/share/nginx/html
 
 # Nginx'i başlat
-EXPOSE 80
+EXPOSE 423
 CMD ["nginx", "-g", "daemon off;"]
