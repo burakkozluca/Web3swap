@@ -18,7 +18,9 @@ const ConnectWallet = () => {
             try {
                 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
                 const provider = new ethers.providers.Web3Provider(window.ethereum);
-                setAccount(accounts[0]);
+                const displayUserId = `${accounts[0].slice(0, 6)}...${accounts[0].slice(-4)}`;
+                setAccount(displayUserId);
+                // setAccount(accounts[0]);
                 await getBalance(provider, accounts[0]);
             } catch (error) {
                 console.error("Error connecting to MetaMask", error);
@@ -32,8 +34,7 @@ const ConnectWallet = () => {
         <div>
             {account ? (
                 <div>
-                    <p>Connected as: {account}</p>
-                    <p>Balance: {balance} ETH</p>
+                   <button>{account}</button> 
                 </div>
             ) : (
                 <button onClick={connectWalletHandler}>Connect</button>
