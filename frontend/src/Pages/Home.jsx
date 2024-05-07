@@ -2,18 +2,23 @@ import React, { useEffect, useState } from "react";
 import "./CSS/Pages.css";
 
 const Home = () => {
-  const [token1, setToken1] = useState("");
-  const [amount1, setAmount1] = useState("");
-  const [token2, setToken2] = useState("");
-  const [amount2, setAmount2] = useState("");
+  const [amount1, setAmount1] = useState(0);
+  const [amount2, setAmount2] = useState(0);
+  const [selectedCoinId1, setSelectedCoinId1] = useState(0);
+  const [selectedCoinId2, setSelectedCoinId2] = useState(0);
   const [estimatedGas, setEstimatedGas] = useState("");
 
   const [coins, setCoins] = useState([]);
   const [ticker, setTicker] = useState([])
 
+  const handleSelectChange = (event) => {
+    setSelectedCoinId1(event.target.value);
+  };
+  const handleSelectChange2 = (event) => {
+    setSelectedCoinId2(event.target.value);
+  };
+
   useEffect(() => {
-
-
     function fetchCoinData() {
       fetch("http://localhost:4000/coins")
         .then((response) => response.json())
@@ -23,19 +28,33 @@ const Home = () => {
             id: key,
             price: data[key]
           }));
+          filteredCoins.push({
+            id: 'USD',
+            price: 1
+          })
           setCoins(filteredCoins); // Filtrelenmiş coin listesini state'e kaydet
           console.log(filteredCoins); // Konsola yazdır
         })
         .catch((error) => console.error("Error fetching data:", error));
     }
     fetchCoinData()
-    // fetch("http://localhost:4000/coins")
-    //   .then((response) => response.json())
-    //   .then((data) => setTicker(data));
-    //   const symbols = Object.keys(ticker);
-    //   setCoins(symbols)
-    // console.log(ticker);
   }, []);
+
+  useEffect(() => {
+    console.log("Selected Coin ID:", selectedCoinId1);
+    console.log("Amount değeri : ", amount1)
+    console.log("Selected Coin ID2:", selectedCoinId2);
+    console.log("Amount değeri2 : ", amount2)
+
+    const amountLast = (parseFloat(selectedCoinId1) * parseFloat(amount1)) /parseFloat(selectedCoinId2)
+
+    setAmount2(amountLast)
+    console.log("Amount last: ", amountLast)
+
+    // Burada, seçilen coin ile ilgili işlemleri yapabilirsiniz, örneğin:
+    // - Döviz kurlarını güncelleyebilirsiniz.
+    // - Tahmini gaz ücretlerini hesaplayabilirsiniz.
+  }, [selectedCoinId1, amount1,selectedCoinId2,amount2]);
 
   return (
     <div className="home">
@@ -43,9 +62,9 @@ const Home = () => {
         <h2 className="swap-header">Token Swap</h2> {/* Başlık eklendi */}
         <div className="swap-box">
           <div className="input-group">
-            <select>
+            <select value={selectedCoinId1} onChange={handleSelectChange}>
               {coins.map((coin) => (
-                <option key={coin.id} value={coin.id}>
+                <option key={coin.key} value={coin.price}>
                   {coin.id} - ${coin.price}
                 </option>
               ))}
@@ -58,9 +77,9 @@ const Home = () => {
             />
           </div>
           <div className="input-group">
-            <select>
+            <select value={selectedCoinId2} onChange={handleSelectChange2}>
               {coins.map((coin) => (
-                <option key={coin.id} value={coin.id}>
+                <option key={coin.id} value={coin.price}>
                   {coin.id} - ${coin.price}
                 </option>
               ))}
