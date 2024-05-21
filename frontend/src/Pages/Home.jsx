@@ -1,98 +1,106 @@
 import React, { useEffect, useState } from "react";
 import "./CSS/Pages.css";
+import SelectToken from "../Components/SelectToken/SelectToken";
 
 const Home = () => {
   const [amount1, setAmount1] = useState(0);
   const [amount2, setAmount2] = useState(0);
-  const [selectedCoinId1, setSelectedCoinId1] = useState(0);
-  const [selectedCoinId2, setSelectedCoinId2] = useState(0);
+  const [selectedCoin1, setSelectedCoin1] = useState(null);
+  const [selectedCoin2, setSelectedCoin2] = useState(null);
   const [estimatedGas, setEstimatedGas] = useState("");
 
   const [coins, setCoins] = useState([]);
-  const [ticker, setTicker] = useState([])
 
-  const handleSelectChange = (event) => {
-    setSelectedCoinId1(event.target.value);
+  const handleSelectChange1 = (coinId) => {
+    const coin = coins.find((c) => c.id === coinId);
+    setSelectedCoin1(coin);
   };
-  const handleSelectChange2 = (event) => {
-    setSelectedCoinId2(event.target.value);
+
+  const handleSelectChange2 = (coinId) => {
+    const coin = coins.find((c) => c.id === coinId);
+    setSelectedCoin2(coin);
   };
 
   useEffect(() => {
-    function fetchCoinData() {
-      fetch("http://localhost:4000/coins")
-        .then((response) => response.json())
-        .then((data) => {
-          setTicker(data);
-          const filteredCoins = ['BTCUSDT', 'ETHUSDT'].map(key => ({
-            id: key,
-            price: data[key]
-          }));
-          filteredCoins.push({
-            id: 'USD',
-            price: 1
-          })
-          setCoins(filteredCoins); // Filtrelenmiş coin listesini state'e kaydet
-          console.log(filteredCoins); // Konsola yazdır
-        })
-        .catch((error) => console.error("Error fetching data:", error));
-    }
-    fetchCoinData()
+    const fetcCoinGecko = async () => {
+      const urlMarketCapitalTen =
+        "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=10&page=1";
+      const options = {
+        method: "GET",
+        headers: {
+          accept: "application/json",
+          "x-cg-demo-api-key": "CG-EuXL6u3vtLzpKN7yEVzv6cb2",
+        },
+      };
+
+      try {
+        const res = await fetch(urlMarketCapitalTen, options);
+        const data = await res.json();
+        setCoins(data);
+      } catch (err) {
+        console.error("error:", err);
+      }
+    };
+
+    fetcCoinGecko();
   }, []);
 
   useEffect(() => {
-    console.log("Selected Coin ID:", selectedCoinId1);
-    console.log("Amount değeri : ", amount1)
-    console.log("Selected Coin ID2:", selectedCoinId2);
-    console.log("Amount değeri2 : ", amount2)
+    if (selectedCoin1 && selectedCoin2) {
+      const amountLast =
+        (parseFloat(selectedCoin1.current_price) * parseFloat(amount1)) /
+        parseFloat(selectedCoin2.current_price);
 
-    const amountLast = (parseFloat(selectedCoinId1) * parseFloat(amount1)) /parseFloat(selectedCoinId2)
-
-    setAmount2(amountLast)
-    console.log("Amount last: ", amountLast)
-
-    // Burada, seçilen coin ile ilgili işlemleri yapabilirsiniz, örneğin:
-    // - Döviz kurlarını güncelleyebilirsiniz.
-    // - Tahmini gaz ücretlerini hesaplayabilirsiniz.
-  }, [selectedCoinId1, amount1,selectedCoinId2,amount2]);
+      setAmount2(amountLast);
+    }
+  }, [selectedCoin1, amount1, selectedCoin2]);
 
   return (
-    <div className="home">
+    <div>
       <div className="swap-container">
-        <h2 className="swap-header">Token Swap</h2> {/* Başlık eklendi */}
+        <h2 className="swap-header">Token Swap</h2>
         <div className="swap-box">
           <div className="input-group">
-            <select value={selectedCoinId1} onChange={handleSelectChange}>
-              {coins.map((coin) => (
-                <option key={coin.key} value={coin.price}>
-                  {coin.id} - ${coin.price}
-                </option>
-              ))}
-            </select>
+            {coins.length > 0 ? (
+              <SelectToken
+                coins={coins}
+                handleSelectChange={handleSelectChange1}
+                selectedCoin={selectedCoin1}
+              />
+            ) : (
+              <p>Loading coins...</p>
+            )}
             <input
               type="text"
+              placeholder="Amount"
               value={amount1}
               onChange={(e) => setAmount1(e.target.value)}
-              placeholder="amount"
+              className="custom-input ml-2"
+              style={{ width: "100%" }}
             />
           </div>
+
           <div className="input-group">
-            <select value={selectedCoinId2} onChange={handleSelectChange2}>
-              {coins.map((coin) => (
-                <option key={coin.id} value={coin.price}>
-                  {coin.id} - ${coin.price}
-                </option>
-              ))}
-            </select>
+            {coins.length > 0 ? (
+              <SelectToken
+                coins={coins}
+                handleSelectChange={handleSelectChange2}
+                selectedCoin={selectedCoin2}
+              />
+            ) : (
+              <p>Loading coins...</p>
+            )}
             <input
               type="text"
+              placeholder="Amount"
               value={amount2}
-              onChange={(e) => setAmount2(e.target.value)}
-              placeholder="amount"
+              className="custom-input ml-2"
+              style={{ width: "100%" }}
             />
           </div>
+
           <div className="estimated-gas">
-            <label>Estimated Gas12: {estimatedGas}</label>
+            <label>Estimated Gas: {estimatedGas}</label>
           </div>
           <button
             className="swap-button"
