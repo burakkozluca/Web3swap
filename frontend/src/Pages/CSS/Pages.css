@@ -4,11 +4,12 @@
     align-items: center;
 }
 .swap-container {
-    background-color: #1a1a1a;
-    color: white;
+    background-color:  #BDC3C7 ;
+    color: #000000;
+
     padding: 30px;
     border-radius: 10px;
-    height: 400px;
+    height: 100%;
     max-width: 600px; /* İhtiyacınıza göre ayarlayabilirsiniz */
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     margin: 2rem auto;
@@ -35,7 +36,7 @@
     padding: 15px;
     border: 2px solid #333;
     border-radius: 5px;
-    background-color: #262626;
+    background-color: #a09b9b;
     color: white;
     font-size: 1rem;
   }
